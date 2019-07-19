@@ -1,5 +1,5 @@
 [Desktop Entry]
-Version=${${PROJECT_NAME}_VERSION}
+Version=1.0
 Type=Application
 Name=AstroPhoto Plus Desktop client
 Comment=Native desktop app wrapper for AstroPhoto Plus, with notifications and server discovery
