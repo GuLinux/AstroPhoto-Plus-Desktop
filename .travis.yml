@@ -35,8 +35,12 @@ matrix:
             edge: true
             skip_cleanup: true
             provider: script
-            script: python3 ${TRAVIS_BUILD_DIR}/build/travis_deploy.py ${TRAVIS_BUILD_DIR}/build/AstroPhoto*AppImage*
+            script:
+              - ls -alh ${TRAVIS_BUILD_DIR}/build
+              - python3 ${TRAVIS_BUILD_DIR}/build/travis_deploy.py ${TRAVIS_BUILD_DIR}/build/AstroPhoto*AppImage*
             on:
-              branch: master
+              branch:
+                - master
+                - fix_deployment
               tags: false
 
