@@ -1,4 +1,4 @@
-if: '(branch = master OR type = pull_request OR commit_message =~ /.*#trigger_ci.*/) AND (NOT commit_message =~ /.*#skip_ci.*/)'
+if: '(branch = master OR type = pull_request OR commit_message =~ /.*#trigger_ci.*/) AND (NOT commit_message =~ /.*#skip_ci.*/) AND ( tag IS blank )'
 matrix:
     include:
         - language: cpp
@@ -45,9 +45,8 @@ matrix:
             skip_cleanup: true
             provider: releases
             token: ${GITHUB_OAUTH_TOKEN}
-            file:
-              - ${TRAVIS_BUILD_DIR}/build/AstroPhoto_Plus_Desktop-${PROJECT_VERSION}.AppImage
-              - ${TRAVIS_BUILD_DIR}/build/AstroPhoto_Plus_Desktop-${PROJECT_VERSION}.AppImage.zsync
+            file: "${TRAVIS_BUILD_DIR}/build/AstroPhoto*.AppImage"
+            tag_name: ${GIT_TAG}
             on:
               branch: travis_ci_desktop
               tags: false
