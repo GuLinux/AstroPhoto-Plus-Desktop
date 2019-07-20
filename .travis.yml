@@ -35,9 +35,9 @@ matrix:
               - source ${TRAVIS_BUILD_DIR}/build/release.env
               - export RELEASES_RELEASE_NOTES_FILE="${TRAVIS_BUILD_DIR}/build/${RELEASES_RELEASE_NOTES_FILE}"
               - export RELEASES_RELEASE_NUMBER=v${PROJECT_VERSION}
-              - export TRAVIS_TAG=${RELEASES_RELEASE_NUMBER}
+              - export GIT_TAG=${RELEASES_RELEASE_NUMBER}
               - export GITHUB_TOKEN=${GITHUB_OAUTH_TOKEN}
-              - git tag $TRAVIS_TAG
+              - git tag $GIT_TAG
               - git push -q https://${GITHUB_OAUTH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} --tags
               - git fetch --all
           deploy:
@@ -45,7 +45,9 @@ matrix:
             skip_cleanup: true
             provider: releases
             token: ${GITHUB_OAUTH_TOKEN}
-            file: "${TRAVIS_BUILD_DIR}/build/AstroPhoto_Plus*.AppImage"
+            file:
+              - ${TRAVIS_BUILD_DIR}/build/AstroPhoto_Plus_Desktop-${PROJECT_VERSION}.AppImage
+              - ${TRAVIS_BUILD_DIR}/build/AstroPhoto_Plus_Desktop-${PROJECT_VERSION}.AppImage.zsync
             on:
               branch: travis_ci_desktop
               tags: false
