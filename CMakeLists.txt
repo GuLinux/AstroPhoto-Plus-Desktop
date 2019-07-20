@@ -3,9 +3,9 @@ cmake_minimum_required(VERSION 3.8.2)
 execute_process(COMMAND git rev-parse --short HEAD OUTPUT_VARIABLE COMMIT_ID)
 string(STRIP ${COMMIT_ID} COMMIT_ID)
 execute_process(COMMAND git show -s --format=%ci ${COMMIT_ID} OUTPUT_VARIABLE COMMIT_DATE)
-string(REPLACE "-" "" ${COMMIT_DATE} COMMIT_DATE)
-message(${COMMIT_DATE})
+string(REPLACE "-" "" COMMIT_DATE ${COMMIT_DATE})
 string(SUBSTRING ${COMMIT_DATE} 0 8 COMMIT_DATE)
+message(${COMMIT_DATE})
 
 
 set(PROJECT_VERSION_SUFFIX _${COMMIT_DATE}-${COMMIT_ID})
