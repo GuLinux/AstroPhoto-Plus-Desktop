@@ -26,7 +26,8 @@ matrix:
               - wget https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
               - chmod a+x linuxdeployqt-6-x86_64.AppImage
               - echo ${PROJECT_VERSION}
-              - VERSION=${PROJECT_VERSION} ${TRAVIS_BUILD_DIR}/build/linuxdeployqt-6-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+              - export VERSION=${PROJECT_VERSION}
+              - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt-6-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
               - ls -alh
               - wget "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/36e6aeffe8b08dfd9b10524d9cdb053df95245ab/python/travis_find_latest_github_pr.py"
               - sudo apt-get install python3 python3-github
