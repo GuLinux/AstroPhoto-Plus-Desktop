@@ -29,25 +29,14 @@ matrix:
               - export VERSION=${PROJECT_VERSION}
               - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt-6-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
               - ls -alh
-              - wget "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/36e6aeffe8b08dfd9b10524d9cdb053df95245ab/python/travis_find_latest_github_pr.py"
+              - wget "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/34d860a3c7fdbef81a9003d2ccfc0193f0d1d2fc/python/travis_release.py"
               - sudo apt-get install python3 python3-github
-              - python3 ${TRAVIS_BUILD_DIR}/__removeme_travis_find_latest_github_pr.py
-              - source ${TRAVIS_BUILD_DIR}/build/release.env
-              - export RELEASES_RELEASE_NOTES_FILE="${TRAVIS_BUILD_DIR}/build/${RELEASES_RELEASE_NOTES_FILE}"
-              - export RELEASES_RELEASE_NUMBER=v${PROJECT_VERSION}
-              - export GIT_TAG=${RELEASES_RELEASE_NUMBER}
-              - export GITHUB_TOKEN=${GITHUB_OAUTH_TOKEN}
-              - git tag $GIT_TAG
-              - git push -q https://${GITHUB_OAUTH_TOKEN}@github.com/${TRAVIS_REPO_SLUG} --tags
-              - git fetch --all
           deploy:
             edge: true
             skip_cleanup: true
-            provider: releases
-            token: ${GITHUB_OAUTH_TOKEN}
-            file: "${TRAVIS_BUILD_DIR}/build/AstroPhoto*.AppImage"
-            tag_name: ${GIT_TAG}
+            provider: script
+            script: python3 ${TRAVIS_BUILD_DIR}/build/travis_deploy.py ${TRAVIS_BUILD_DIR}/build/AstroPhoto*AppImage*
             on:
-              branch: travis_ci_desktop
+              branch: master
               tags: false
 
