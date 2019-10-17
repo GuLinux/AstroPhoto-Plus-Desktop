@@ -35,7 +35,7 @@ matrix:
           deploy:
             skip_cleanup: true
             provider: script
-            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage*
+            script: python3 -v "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage*
             on:
               branch:
                 - master
