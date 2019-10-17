@@ -33,7 +33,6 @@ matrix:
               - ls -alh ${TRAVIS_BUILD_DIR}/build
               - md5sum travis_release.py
           deploy:
-            edge: true
             skip_cleanup: true
             provider: script
             script:
