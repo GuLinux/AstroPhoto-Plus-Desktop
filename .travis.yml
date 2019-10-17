@@ -28,14 +28,14 @@ matrix:
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
               - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt-6-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
-              - sudo apt-get install python3 python3-venv
-              - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
-              - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
-              - pip3 install PyGithub
+              - sudo apt-get install python3 python3-github
+              - wget "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/02622a5efce3cc93842fa277ba349e8ece3c852b/python/travis_release.py"
+              - ls -alh ${TRAVIS_BUILD_DIR}/build
+              - md5sum travis_release.py
           deploy:
             skip_cleanup: true
             provider: script
-            script: ${TRAVIS_BUILD_DIR}/scripts/travis_deploy
+            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage*
             on:
               branch:
                 - master
