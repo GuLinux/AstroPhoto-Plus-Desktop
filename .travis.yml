@@ -1,0 +1,49 @@
+if: '(branch = master OR type = pull_request OR commit_message =~ /.*#trigger_ci.*/) AND (NOT commit_message =~ /.*#skip_ci.*/)'
+matrix:
+    include:
+        - language: cpp
+          name: Astrophoto Plus Desktop - Linux AppImage
+          dist: xenial
+          os: linux
+          before_install:
+              - sudo add-apt-repository ppa:beineri/opt-qt-5.12.3-xenial -y
+              - sudo apt-get update -qq
+          install:
+              - sudo apt-get -y install libgl1-mesa-dev qt512base qt512multimedia qt512webengine
+          before_script:
+              - mkdir ${TRAVIS_BUILD_DIR}/build
+              - cd ${TRAVIS_BUILD_DIR}/build
+              - wget https://github.com/probonopd/linuxdeployqt/releases/download/6/linuxdeployqt-6-x86_64.AppImage
+              - chmod a+x linuxdeployqt-6-x86_64.AppImage
+          script:
+              - source /opt/qt*/bin/qt*-env.sh
+              - cd ${TRAVIS_BUILD_DIR}/build
+              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Debug
+              - make -j$(nproc)
+              - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
+              - export VERSION=0.1
+              - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt-6-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
+              - find ${TRAVIS_BUILD_DIR} -name "*.AppImage*"
+          before_deploy:
+              - cd "${TRAVIS_BUILD_DIR}/build"
+              - wget "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/36e6aeffe8b08dfd9b10524d9cdb053df95245ab/python/travis_find_latest_github_pr.py"
+              - sudo apt-get install python3 python3-github
+              - python3 ${TRAVIS_BUILD_DIR}/__removeme_travis_find_latest_github_pr.py
+              - source ${TRAVIS_BUILD_DIR}/build/release.env
+              - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
+              - export RELEASES_RELEASE_NOTES_FILE="${TRAVIS_BUILD_DIR}/build/${RELEASES_RELEASE_NOTES_FILE}"
+              - export RELEASES_RELEASE_NUMBER=v${PROJECT_VERSION}
+              - export TRAVIS_TAG=${RELEASES_RELEASE_NUMBER}
+              - export GITHUB_TOKEN=${GITHUB_OAUTH_TOKEN}
+              - git tag $TRAVIS_TAG
+              - git push -q https://${GITHUB_OAUTH_TOKEN}@github.com/GuLinux/AstroPhoto-Plus --tags
+          deploy:
+            edge: true
+            skip_cleanup: true
+            provider: releases
+            token: ${GITHUB_OAUTH_TOKEN}
+            file: "${TRAVIS_BUILD_DIR}/build/AstroPhoto_Plus_Desktop_client*.AppImage"
+            on:
+              branch: master
+              tags: false
+
