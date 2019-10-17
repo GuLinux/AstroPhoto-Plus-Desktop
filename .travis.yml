@@ -28,8 +28,8 @@ matrix:
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
               - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt-6-x86_64.AppImage appdir/usr/share/applications/*.desktop -appimage
-              - wget "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/34d860a3c7fdbef81a9003d2ccfc0193f0d1d2fc/python/travis_release.py"
               - sudo apt-get install python3 python3-github
+              - wget "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/34d860a3c7fdbef81a9003d2ccfc0193f0d1d2fc/python/travis_release.py"
               - ls -alh ${TRAVIS_BUILD_DIR}/build
           deploy:
             edge: true
