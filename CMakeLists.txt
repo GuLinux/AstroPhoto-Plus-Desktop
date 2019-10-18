@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.8.2)
+cmake_minimum_required(VERSION 3.5.1)
 
-execute_process(COMMAND git rev-parse --short HEAD OUTPUT_VARIABLE COMMIT_ID)
+execute_process(COMMAND git rev-parse --short HEAD OUTPUT_VARIABLE COMMIT_ID WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 string(STRIP ${COMMIT_ID} COMMIT_ID)
-execute_process(COMMAND git show -s --format=%ci ${COMMIT_ID} OUTPUT_VARIABLE COMMIT_DATE)
+execute_process(COMMAND git show -s --format=%ci ${COMMIT_ID} OUTPUT_VARIABLE COMMIT_DATE WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 string(REPLACE "-" "" COMMIT_DATE ${COMMIT_DATE})
 string(SUBSTRING ${COMMIT_DATE} 0 8 COMMIT_DATE)
 
