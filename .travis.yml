@@ -42,6 +42,5 @@ matrix:
             on:
               branch:
                 - master
-                - fix_deployment
               tags: false
 
