@@ -24,6 +24,7 @@ AstroPhotoPlusWidget::AstroPhotoPlusWidget(const QUrl &serverAddress, Notificati
     layout->addWidget(this->webengine = new QWebEngineView(this));
 
     webengine->setPage(new CustomWebPage(webengine));
+    webengine->setContextMenuPolicy(Qt::PreventContextMenu);
     hide();
     connect(api.get(), &API::serverOk, this, [this](const QString &serverName, const QUrl &serverUrl) {
         this->serverName = serverName;
@@ -77,3 +78,4 @@ void AstroPhotoPlusWidget::eventReceived(const QMap<QString, QString> &event)
         }
     }
 }
+
