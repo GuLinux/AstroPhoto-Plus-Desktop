@@ -15,6 +15,7 @@ matrix:
               - mkdir ${TRAVIS_BUILD_DIR}/build
           script:
               - cd ${TRAVIS_BUILD_DIR}
+              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release
               - cmake --build ${TRAVIS_BUILD_DIR}/build --config Release --parallel
 
 #        - language: cpp

@@ -1,6 +1,11 @@
 #!/bin/bash
+
+get_qt_size() {
+    du -sh "${QT5_BASE_DIR}"
+}
+
 if [ -r "$QT5_BASE_DIR/bin/qmake.exe" ]; then
-    echo "Qt5 already installed [CACHE]"
+    echo "Qt5 already installed; Qt installation size: $(get_qt_size)"
     exit 0
 fi
 
@@ -10,5 +15,5 @@ if ! ./qt-unified-windows-x86-online.exe --verbose --script ${TRAVIS_BUILD_DIR}/
     exit 1;
 fi
 rm -rf qt-installer.log qt-unified-windows-x86-online.exe
-echo "Qt installation size: $( du -sh ${QT5_BASE_DIR})"
+echo "Qt installation size: $(get_qt_size)"
 
