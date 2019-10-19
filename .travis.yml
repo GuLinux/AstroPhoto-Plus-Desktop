@@ -13,13 +13,17 @@ matrix:
               - bash ${TRAVIS_BUILD_DIR}/support/travis-install-qt-for-windows
           before_script:
               - mkdir ${TRAVIS_BUILD_DIR}/build
+              - $QT5_BASE_DIR/bin/qtenv2.bat
           script:
               - cd ${TRAVIS_BUILD_DIR}/build
-              - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR} -DQt5_DIR=${QT5_BASE_DIR}; then
+              - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR} -DQt5_DIR=${QT5_BASE_DIR} -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
                     cat ${TRAVIS_BUILD_DIR}/build/CMakeFiles/CMakeOutput.log;
                     exit 1;
                 fi
-              - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel
+              - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release 
+              - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release --target install
+              - windeployqt --dir pkg\bin pkg\bin\AstroPhotoPlus-Desktop.exe  --release --no-compiler-runtime
+              - find pkg
 
 #        - language: cpp
 #          name: Astrophoto Plus Desktop - Linux AppImage

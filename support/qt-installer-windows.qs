@@ -16,6 +16,7 @@ var INSTALL_COMPONENTS = [
     "qt.qt5.5125.win64_msvc2017_64",
     "qt.qt5.5125.qtwebengine",
     "qt.qt5.5125.qtwebengine.win64_msvc2017_64",
+//    "qt.tools.ifw.31",
 ];
 
 function Controller() {
