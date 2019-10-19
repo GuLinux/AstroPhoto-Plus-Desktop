@@ -3,7 +3,7 @@ matrix:
     include:
         - language: cpp
           env:
-            - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017_64
+            - QT5_BASE_DIR: C:/Qt/5.12.5/msvc2017_64
           name: AstroPhoto Plus Desktop - Windows
           os: windows
           cache:
