@@ -2,6 +2,24 @@ if: '(branch = master OR type = pull_request OR commit_message =~ /.*#trigger_ci
 matrix:
     include:
         - language: cpp
+          name: AstroPhoto Plus Desktop - Windows
+          os: windows
+          install:
+              - wget --quiet http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe
+              - if ! ./qt-unified-windows-x86-online.exe --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-windows.qs > qt-installer.log; then
+                    cat qt-installer.log >&2
+                    exit 1
+                fi
+              - rm -rf qt-installer.log qt-unified-windows-x86-online.exe
+          before_script:
+              - mkdir ${TRAVIS_BUILD_DIR}/build
+
+          script:
+              - cd ${TRAVIS_BUILD_DIR}
+              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=/Qt/5.12.3/msvc2017_64 -DCMAKE_BUILD_TYPE=Release
+              - cmake --build ${TRAVIS_BUILD_DIR}/build --config Release --parallel
+
+        - language: cpp
           name: Astrophoto Plus Desktop - Linux AppImage
           dist: xenial
           os: linux
