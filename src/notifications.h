@@ -21,6 +21,10 @@ protected:
     void mousePressEvent(QMouseEvent *event) override;
 private:
     std::unique_ptr<Ui::Notification> ui;
+public slots:
+    void remove();
+signals:
+    void removed();
 };
 
 class Notifications : public QWidget
