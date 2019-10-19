@@ -14,8 +14,11 @@ matrix:
           before_script:
               - mkdir ${TRAVIS_BUILD_DIR}/build
           script:
-              - cd ${TRAVIS_BUILD_DIR}
-              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release
+              - cd ${TRAVIS_BUILD_DIR}/build
+              - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release; then
+                    cat ${TRAVIS_BUILD_DIR}/build/CMakeFiles/CMakeOutput.log;
+                    exit 1;
+                fi
               - cmake --build ${TRAVIS_BUILD_DIR}/build --config Release --parallel
 
 #        - language: cpp
