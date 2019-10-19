@@ -8,7 +8,7 @@ matrix:
               - wget --quiet http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe
               - if ! ./qt-unified-windows-x86-online.exe --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-windows.qs > qt-installer.log; then
                     cat qt-installer.log >&2;
-                    exit 1
+                    exit 1;
                 fi
               - rm -rf qt-installer.log qt-unified-windows-x86-online.exe
           before_script:
