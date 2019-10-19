@@ -13,8 +13,9 @@
 // https://download.qt.io/online/qtsdkrepository/windows_x86/desktop/qt5_5123/Updates.xml
 // Unfortunately it is not possible to disable deps like qt.tools.qtcreator
 var INSTALL_COMPONENTS = [
-    "qt.qt5.5123.win64_msvc2017_64",
-    "qt.qt5.5123.qtwebengine.win64_msvc2017_64"
+    "qt.qt5.5125.win64_msvc2017_64",
+    "qt.qt5.5125.qtwebengine",
+    "qt.qt5.5125.qtwebengine.win64_msvc2017_64",
 ];
 
 function Controller() {

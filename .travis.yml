@@ -15,7 +15,7 @@ matrix:
               - mkdir ${TRAVIS_BUILD_DIR}/build
           script:
               - cd ${TRAVIS_BUILD_DIR}/build
-              - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR} -DQt5_DIR=${QT5_BASE_DIR} -DQt5WebEngineWidgets_DIR=${QT5_BASE_DIR}; then
+              - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR} -DQt5_DIR=${QT5_BASE_DIR}; then
                     cat ${TRAVIS_BUILD_DIR}/build/CMakeFiles/CMakeOutput.log;
                     exit 1;
                 fi
