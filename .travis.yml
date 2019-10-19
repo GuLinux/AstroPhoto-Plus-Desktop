@@ -6,17 +6,13 @@ matrix:
             - QT5_BASE_DIR: C:/Qt/5.12.3/msvc2017_64
           name: AstroPhoto Plus Desktop - Windows
           os: windows
+          cache:
+            directories:
+              - C:/Qt
           install:
-              - wget --quiet http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe
-              - if ! ./qt-unified-windows-x86-online.exe --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-windows.qs > qt-installer.log; then
-                    cat qt-installer.log >&2;
-                    exit 1;
-                fi
-              - rm -rf qt-installer.log qt-unified-windows-x86-online.exe
-              - echo "Qt installation size: $( du -sh ${QT5_BASE_DIR})"
+              - bash ${TRAVIS_BUILD_DIR}/support/travis-install-qt-for-windows
           before_script:
               - mkdir ${TRAVIS_BUILD_DIR}/build
-
           script:
               - cd ${TRAVIS_BUILD_DIR}
               - cmake --build ${TRAVIS_BUILD_DIR}/build --config Release --parallel

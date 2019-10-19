@@ -1,0 +1,14 @@
+#!/bin/bash
+if [ -r "$QT5_BASE_DIR/bin/qmake.exe" ]; then
+    echo "Qt5 already installed [CACHE]"
+    exit 0
+fi
+
+wget --quiet http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe
+if ! ./qt-unified-windows-x86-online.exe --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-windows.qs > qt-installer.log; then
+    cat qt-installer.log >&2;
+    exit 1;
+fi
+rm -rf qt-installer.log qt-unified-windows-x86-online.exe
+echo "Qt installation size: $( du -sh ${QT5_BASE_DIR})"
+
