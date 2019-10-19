@@ -33,7 +33,7 @@ void Notifications::notify(const QString &serverName, const QString &title, cons
     }
     auto notification = new Notification(serverName, title, text, type, msTimeout, this);
     notifications.append(notification);
-    connect(notification, &Notification::destroyed, this, [this, notification](QObject *) {
+    connect(notification, &Notification::removed, this, [this, notification] {
         notifications.removeAll(notification);
         updateVisibility();
     });
@@ -64,7 +64,7 @@ Notification::Notification(const QString &serverName, const QString &title, cons
     ui->textLabel->setText(text);
     ui->serverNameLabel->setText(serverName);
     if(msTimeout) {
-        QTimer::singleShot(msTimeout, this, &QWidget::deleteLater);
+        QTimer::singleShot(msTimeout, this, &Notification::remove);
     }
     auto palette = this->palette();
     palette.setColor(QPalette::Background, QColor(0,0,0,190));
@@ -79,5 +79,11 @@ Notification::~Notification()
 
 void Notification::mousePressEvent(QMouseEvent *)
 {
+    this->remove();
+}
+
+void Notification::remove()
+{
+    emit removed();
     this->deleteLater();
 }
