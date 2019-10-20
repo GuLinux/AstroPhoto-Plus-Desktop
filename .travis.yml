@@ -32,6 +32,7 @@ matrix:
             - cd "$TRAVIS_BUILD_DIR/build/pkg/bin"
             - |
                 "C:/Program Files (x86)/NSIS/makensis.exe" //NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
+            - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
             - echo ${PROJECT_VERSION}
             - echo ${TRAVIS_WINDOWS_BUILD_DIR}
             - export VERSION=${PROJECT_VERSION}
@@ -39,7 +40,6 @@ matrix:
             - pwd
             - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
             - ls -alh ${TRAVIS_BUILD_DIR}/build/travis_release.py
-            - export ASTROPHOTOPLUS_DESKTOP_SETUP_EXE=""
             - md5sum travis_release.py
             - pip install PyGithub
 
