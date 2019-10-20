@@ -31,6 +31,7 @@ matrix:
             - echo ${PROJECT_VERSION}
             - export VERSION=${PROJECT_VERSION}
             - cinst -y python3
+            - RefreshEnv
             - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
             - ls -alh ${TRAVIS_BUILD_DIR}/build
             - md5sum travis_release.py
