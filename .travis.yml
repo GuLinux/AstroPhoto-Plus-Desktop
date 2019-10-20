@@ -26,7 +26,8 @@ matrix:
             - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release --target install
             - $QT5_BASE_DIR/bin/windeployqt --dir $TRAVIS_BUILD_DIR/build/pkg/bin $TRAVIS_BUILD_DIR/build/pkg/bin/AstroPhotoPlus-Desktop.exe  --release --no-compiler-runtime
             - cd "$TRAVIS_BUILD_DIR/build/pkg/bin"
-            - "C:/Program Files (x86)/NSIS/makensis.exe" /NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
+            - |
+                "C:/Program Files (x86)/NSIS/makensis.exe" /NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
             - echo ${PROJECT_VERSION}
             - export VERSION=${PROJECT_VERSION}
             - cinst -y python3
