@@ -36,8 +36,10 @@ matrix:
             - ls -alh ${TRAVIS_BUILD_DIR}/build
             - md5sum travis_release.py
             - python -m venv ${TRAVIS_BUILD_DIR}/build/venv
+            - ls -alh ${TRAVIS_BUILD_DIR}/build/venv
+            - ls -alh ${TRAVIS_BUILD_DIR}/build/venv/bin
             - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
-            - pip3 install PyGithub
+            - pip install PyGithub
 
           deploy:
             skip_cleanup: true
