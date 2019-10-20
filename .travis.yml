@@ -23,7 +23,9 @@ matrix:
               fi
             - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release 
           before_deploy:
-            - choco install nsis
+            - cd ${TRAVIS_BUILD_DIR}/build
+            - cinst -y python3
+            - cinst -y nsis
             - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release --target install
             - $QT5_BASE_DIR/bin/windeployqt --dir $TRAVIS_BUILD_DIR/build/pkg/bin $TRAVIS_BUILD_DIR/build/pkg/bin/AstroPhotoPlus-Desktop.exe  --release --no-compiler-runtime
             - cd "$TRAVIS_BUILD_DIR/build/pkg/bin"
@@ -31,11 +33,10 @@ matrix:
                 "C:/Program Files (x86)/NSIS/makensis.exe" //NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
             - echo ${PROJECT_VERSION}
             - export VERSION=${PROJECT_VERSION}
-            - cinst -y python3
+
             - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
             - ls -alh ${TRAVIS_BUILD_DIR}/build
             - md5sum travis_release.py
-            - python -m venv ${TRAVIS_BUILD_DIR}/build/venv
             - pip install PyGithub
 
           deploy:
