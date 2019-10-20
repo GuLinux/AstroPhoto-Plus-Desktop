@@ -23,6 +23,7 @@ matrix:
               fi
             - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release 
           before_deploy:
+            - export TRAVIS_WINDOWS_BUILD_DIR="$( cd "${TRAVIS_BUILD_DIR}"; pwd -W)"
             - cd ${TRAVIS_BUILD_DIR}/build
             - cinst -y python3
             - cinst -y nsis
@@ -32,19 +33,20 @@ matrix:
             - |
                 "C:/Program Files (x86)/NSIS/makensis.exe" //NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
             - echo ${PROJECT_VERSION}
+            - echo ${TRAVIS_WINDOWS_BUILD_DIR}
             - export VERSION=${PROJECT_VERSION}
             - cd ${TRAVIS_BUILD_DIR}/build
             - pwd
             - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
             - ls -alh ${TRAVIS_BUILD_DIR}/build/travis_release.py
+            - export ASTROPHOTOPLUS_DESKTOP_SETUP_EXE=""
             - md5sum travis_release.py
             - pip install PyGithub
 
           deploy:
             skip_cleanup: true
             provider: script
-            script: python -c "import os; print('${TRAVIS_BUILD_DIR}'); print(os.listdir('${TRAVIS_BUILD_DIR}/build/'))"
-            #script: python ${TRAVIS_BUILD_DIR}/build/travis_release.py "${TRAVIS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
+            script: python ${TRAVIS_WINDOWS_BUILD_DIR}/build/travis_release.py "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
             on:
               branch:
                 - master
