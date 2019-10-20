@@ -34,15 +34,16 @@ matrix:
             - echo ${PROJECT_VERSION}
             - export VERSION=${PROJECT_VERSION}
             - cd ${TRAVIS_BUILD_DIR}/build
+            - pwd
             - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
-            - ls -alh ${TRAVIS_BUILD_DIR}/build
+            - ls -alh ${TRAVIS_BUILD_DIR}/build/travis_release.py
             - md5sum travis_release.py
             - pip install PyGithub
 
           deploy:
             skip_cleanup: true
             provider: script
-            script: python "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
+            script: python ${TRAVIS_BUILD_DIR}/build/travis_release.py "${TRAVIS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
             on:
               branch:
                 - master
