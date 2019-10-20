@@ -36,15 +36,12 @@ matrix:
             - ls -alh ${TRAVIS_BUILD_DIR}/build
             - md5sum travis_release.py
             - python -m venv ${TRAVIS_BUILD_DIR}/build/venv
-            - ls -alh ${TRAVIS_BUILD_DIR}/build/venv
-            - ls -alh ${TRAVIS_BUILD_DIR}/build/venv/bin
-            - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
             - pip install PyGithub
 
           deploy:
             skip_cleanup: true
             provider: script
-            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
+            script: python "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
             on:
               branch:
                 - master
