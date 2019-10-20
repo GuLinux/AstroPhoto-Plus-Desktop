@@ -43,7 +43,8 @@ matrix:
           deploy:
             skip_cleanup: true
             provider: script
-            script: python ${TRAVIS_BUILD_DIR}/build/travis_release.py "${TRAVIS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
+            script: python -c "import os; print('${TRAVIS_BUILD_DIR}'); print(os.listdir('${TRAVIS_BUILD_DIR}/build/'))"
+            #script: python ${TRAVIS_BUILD_DIR}/build/travis_release.py "${TRAVIS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
             on:
               branch:
                 - master
