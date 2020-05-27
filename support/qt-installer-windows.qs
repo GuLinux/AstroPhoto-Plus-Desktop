@@ -43,9 +43,22 @@ Controller.prototype.WelcomePageCallback = function() {
 };
 
 Controller.prototype.CredentialsPageCallback = function() {
+    var page = gui.pageWidgetByObjectName("CredentialsPage");
+    var login = installer.environmentVariable("QT_CI_LOGIN");
+    var password = installer.environmentVariable("QT_CI_PASSWORD");
     console.log("Step: " + gui.currentPageWidget());
+    page.loginWidget.EmailLineEdit.setText(login);
+    page.loginWidget.PasswordLineEdit.setText(password);
     gui.clickButton(buttons.NextButton);
 };
+
+Controller.prototype.ObligationsPageCallback = function()
+{
+        var page = gui.pageWidgetByObjectName("ObligationsPage");
+        page.obligationsAgreement.setChecked(true);
+        page.completeChanged();
+        gui.clickButton(buttons.NextButton);
+}
 
 Controller.prototype.IntroductionPageCallback = function() {
     console.log("Step: " + gui.currentPageWidget());
