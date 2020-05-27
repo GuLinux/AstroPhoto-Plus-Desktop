@@ -52,6 +52,14 @@ Controller.prototype.CredentialsPageCallback = function() {
     gui.clickButton(buttons.NextButton);
 };
 
+Controller.prototype.ObligationsPageCallback = function()
+{
+        var page = gui.pageWidgetByObjectName("ObligationsPage");
+        page.obligationsAgreement.setChecked(true);
+        page.completeChanged();
+        gui.clickButton(buttons.NextButton);
+}
+
 Controller.prototype.IntroductionPageCallback = function() {
     console.log("Step: " + gui.currentPageWidget());
     gui.clickButton(buttons.NextButton);
