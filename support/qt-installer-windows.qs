@@ -43,7 +43,12 @@ Controller.prototype.WelcomePageCallback = function() {
 };
 
 Controller.prototype.CredentialsPageCallback = function() {
+    var page = gui.pageWidgetByObjectName("CredentialsPage");
+    var login = installer.environmentVariable("QT_CI_LOGIN");
+    var password = installer.environmentVariable("QT_CI_PASSWORD");
     console.log("Step: " + gui.currentPageWidget());
+    page.loginWidget.EmailLineEdit.setText(login);
+    page.loginWidget.PasswordLineEdit.setText(password);
     gui.clickButton(buttons.NextButton);
 };
 
