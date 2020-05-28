@@ -10,9 +10,7 @@ It's functionally identical to the browser version, but it offers the following 
 
 ## Download and run
 
-Currently the app is built for Linux (using AppImage universal package) and Windows (64 bit).
-
-OSX should be available as well soon.
+Currently the app is built for Linux (using AppImage universal package), OSX (DMG) and Windows (64 bit).
 
 ### Linux (AppImage)
 
@@ -26,4 +24,11 @@ OSX should be available as well soon.
  - Download one of the Setup `exe` files from the [releases](https://github.com/GuLinux/AstroPhoto-Plus-Desktop/releases) page.
  - Double click the installer
  - Just follow the installer instructions. The installer will setup an icon in your Windows menu.
- - Launch _AstroPhoto Plus Desktop_. If the Windows firewall asks you about app network permissions, please allow everything.
+ - Launch _AstroPhoto Plus Desktop_. If the Windows firewall asks you about app network permissions, please allow everything, as network connectivity is required for discovering and connecting to AstroPhoto Plus servers.
+
+### Mac OSX
+
+ - Download the `dmg` file from the [releases](https://github.com/GuLinux/AstroPhoto-Plus-Desktop/releases) page.
+ - Double click the image to open it
+ - Drag the *AstroPhoto Plus* application into your Mac *Applications* folder.
+
