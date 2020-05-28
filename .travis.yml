@@ -42,11 +42,12 @@ matrix:
             - ls -alh ${TRAVIS_BUILD_DIR}/build/travis_release.py
             - md5sum travis_release.py
             - pip install PyGithub
+            - mv -v "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe" "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Windows-Setup.exe"
 
           deploy:
             skip_cleanup: true
             provider: script
-            script: python ${TRAVIS_WINDOWS_BUILD_DIR}/build/travis_release.py "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe"
+            script: python ${TRAVIS_WINDOWS_BUILD_DIR}/build/travis_release.py "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Windows-Setup.exe"
             on:
               branch:
                 - master
@@ -91,10 +92,11 @@ matrix:
               - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
               - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
               - pip3 install PyGithub
+              - mv -v "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage* "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
           deploy:
             skip_cleanup: true
             provider: script
-            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage*
+            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
             on:
               branch:
                 - master
@@ -126,10 +128,11 @@ matrix:
               - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
               - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
               - pip3 install PyGithub
+              - mv -v "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
           deploy:
             skip_cleanup: true
             provider: script
-            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg"
+            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
             on:
               branch:
                 - master
