@@ -33,6 +33,9 @@ case "$TRAVIS_OS_NAME" in
 esac
 INSTALLER_FILE="$( basename "$INSTALLER_URL" )"
 
+wget --quiet "$INSTALLER_URL"
+chmod a+x "$INSTALLER_FILE"
+
 if [ "${INSTALLER_FILE##*.}" = "dmg" ]; then
     hdiutil attach "$INSTALLER_FILE"
     INSTALLER_FILE=/Volumes/qt-unified-*/qt-unified-*.app/Contents/MacOS/qt-unified*online
@@ -42,8 +45,8 @@ fi
 sed "s/\/\/QT_Components_Placeholder/$COMPONENTS/g" "$TRAVIS_BUILD_DIR/support/qt-installer.qs" > "$TRAVIS_BUILD_DIR/support/qt-installer-$TRAVIS_OS_NAME.qs"
 
 
-wget --quiet "$INSTALLER_URL"
-chmod a+x "$INSTALLER_FILE"
+
+
 if ! "./$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-$TRAVIS_OS_NAME.qs; then
     exit 1;
 fi
