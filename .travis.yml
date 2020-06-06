@@ -12,7 +12,7 @@ matrix:
             directories:
             - C:/Qt
           install:
-            - bash -x ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
+            - bash ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
           before_script:
             - mkdir ${TRAVIS_BUILD_DIR}/build
             - find "$QT5_BASEDIR" -type f
@@ -58,7 +58,7 @@ matrix:
 
         - language: cpp
           name: Astrophoto Plus Desktop - Linux AppImage
-          dist: bionic
+          dist: xenial
           os: linux
           env:
             - QT5_BASEDIR: "${HOME}/Qt"

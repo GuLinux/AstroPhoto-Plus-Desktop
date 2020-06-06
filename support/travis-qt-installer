@@ -33,7 +33,6 @@ sed "s/\/\/QT_Components_Placeholder/$COMPONENTS/g" "$TRAVIS_BUILD_DIR/support/q
 
 
 wget --quiet "$INSTALLER_URL"
-exit 1
 chmod a+x "$INSTALLER_FILE"
 if ! "./$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-$TRAVIS_OS_NAME.qs; then
     exit 1;
