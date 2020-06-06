@@ -1,0 +1,44 @@
+#!/bin/bash
+QT5_ROOTDIR="$( cd "$QT5_BASE_DIR"/../..; pwd)"
+
+get_qt_size() {
+    du -sh "${QT5_BASE_DIR}"
+}
+
+EXEC_SUFFIX=""
+[ "$TRAVIS_OS_NAME" == "windows" ] && EXEC_SUFFIX=".exe"
+
+if [ -r "$QT5_BASE_DIR/bin/qmake$EXEC_SUFFIX" ]; then
+    echo "Qt5 already installed; Qt installation size: $(get_qt_size)"
+    exit 0
+fi
+
+case "$TRAVIS_OS_NAME" in
+    windows)
+        INSTALLER_URL="http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe"
+        COMPONENTS="\"qt.qt5.${QT5_VERSION}.win64_msvc2017_64\", \"qt.qt5.${QT5_VERSION}.qtwebengine\", \"qt.qt5.${QT5_VERSION}.qtwebengine.win64_msvc2017_64\""
+        ;;
+    linux)
+        INSTALLER_URL="https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run"
+        COMPONENTS="\"qt.qt5.${QT5_VERSION}.gcc_64\", \"qt.qt5.${QT5_VERSION}.qtwebengine\", \"qt.qt5.${QT5_VERSION}.qtwebengine.gcc_64\""
+        ;;
+    osx)
+        INSTALLER_URL="qt-unified-windows-x86-online.ex://download.qt.io/official_releases/online_installers/qt-unified-mac-x64-online.dmg"
+        COMPONENTS="\"qt.qt5.${QT5_VERSION}.clang_64\", \"qt.qt5.${QT5_VERSION}.qtwebengine\", \"qt.qt5.${QT5_VERSION}.qtwebengine.clang_64\""
+        ;;
+esac
+INSTALLER_FILE="$( basename "$INSTALLER_URL" )"
+
+sed "s/\/\/QT_Components_Placeholder/$COMPONENTS/g" "$TRAVIS_BUILD_DIR/support/qt-installer.qs" > "$TRAVIS_BUILD_DIR/support/qt-installer-$TRAVIS_OS_NAME.qs"
+
+wget --quiet "$INSTALLER_URL"
+chmod a+x "$INSTALLER_FILE"
+if ! "./$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-$TRAVIS_OS_NAME.qs; then
+    exit 1;
+fi
+rm -rf "$INSTALLER_FILE"
+echo "Qt installation size (before removing docs and examples): $(get_qt_size)"
+rm -rf "$QT5_ROOTDIR/Docs" "$QT5_ROOTDIR/Examples" "$QT5_ROOTDIR/Tools/QtCreator" "$QT5_ROOTDIR/vcredist" "$QT5_ROOTDIR/MaintenanceTool"*
+
+echo "Qt installation size: $(get_qt_size)"
+
