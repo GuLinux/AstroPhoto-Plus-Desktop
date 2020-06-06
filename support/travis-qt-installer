@@ -38,7 +38,7 @@ if ! "./$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-insta
 fi
 rm -rf "$INSTALLER_FILE"
 echo "Qt installation size (before removing docs and examples): $(get_qt_size)"
-rm -rf "$QT5_ROOTDIR/Docs" "$QT5_ROOTDIR/Examples" "$QT5_ROOTDIR/Tools/QtCreator" "$QT5_ROOTDIR/vcredist" "$QT5_ROOTDIR/MaintenanceTool"*
-
+rm -vrf "$QT5_ROOTDIR/Docs" "$QT5_ROOTDIR/Examples" "$QT5_ROOTDIR/Tools/QtCreator" "$QT5_ROOTDIR/vcredist" "$QT5_ROOTDIR/MaintenanceTool"*
+ls -alh "$QT5_ROOTDIR"
 echo "Qt installation size: $(get_qt_size)"
 
