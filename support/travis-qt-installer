@@ -37,8 +37,11 @@ wget --quiet "$INSTALLER_URL"
 chmod a+x "$INSTALLER_FILE"
 
 if [ "${INSTALLER_FILE##*.}" = "dmg" ]; then
+    set -x
     hdiutil attach "$INSTALLER_FILE"
-    INSTALLER_FILE=/Volumes/qt-unified-*/qt-unified-*.app/Contents/MacOS/qt-unified*online
+    find /Volumes/qt-unified-*
+    INSTALLER_FILE=$(ls /Volumes/qt-unified-*/qt-unified-*.app/Contents/MacOS/qt-unified*online)
+    set +x
     echo "Using Mac installer: $INSTALLER_FILE"
 fi
 
