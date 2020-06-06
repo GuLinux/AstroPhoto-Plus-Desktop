@@ -15,7 +15,7 @@ fi
 
 case "$TRAVIS_OS_NAME" in
     windows)
-        INSTALLER_URL="http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe"
+        INSTALLER_URL="https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe"
         COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.win64_msvc2019_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.win64_msvc2019_64\""
         ;;
     linux)
@@ -27,11 +27,17 @@ case "$TRAVIS_OS_NAME" in
         exit 0
         ;;
     osx)
-        INSTALLER_URL="qt-unified-windows-x86-online.ex://download.qt.io/official_releases/online_installers/qt-unified-mac-x64-online.dmg"
+        INSTALLER_URL="https://download.qt.io/official_releases/online_installers/qt-unified-mac-x64-online.dmg"
         COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.clang_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.clang_64\""
         ;;
 esac
 INSTALLER_FILE="$( basename "$INSTALLER_URL" )"
+
+if [ "${INSTALLER_FILE##*.}" = "dmg" ]; then
+    hdiutil attach "$INSTALLER_FILE"
+    INSTALLER_FILE=/Volumes/qt-unified-*/qt-unified-*.app/Contents/MacOS/qt-unified*online
+    echo "Using Mac installer: $INSTALLER_FILE"
+fi
 
 sed "s/\/\/QT_Components_Placeholder/$COMPONENTS/g" "$TRAVIS_BUILD_DIR/support/qt-installer.qs" > "$TRAVIS_BUILD_DIR/support/qt-installer-$TRAVIS_OS_NAME.qs"
 
