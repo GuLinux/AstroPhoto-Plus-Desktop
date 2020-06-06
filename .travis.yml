@@ -4,7 +4,7 @@ matrix:
         - language: cpp
           env:
             - QT5_BASEDIR: "C:/Qt"
-            - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2017_64"
+            - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2019_64"
             - PATH: /c/Python38:/c/Python38/Scripts:$PATH
           name: AstroPhoto Plus Desktop - Windows
           os: windows
@@ -19,7 +19,7 @@ matrix:
             - $QT5_DIR/bin/qtenv2.bat
           script:
             - cd ${TRAVIS_BUILD_DIR}/build
-            - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR} -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
+            - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR} -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
                   cat ${TRAVIS_BUILD_DIR}/build/CMakeFiles/CMakeOutput.log;
                   exit 1;
               fi
@@ -92,7 +92,7 @@ matrix:
               - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
               - cp -av /usr/lib/x86_64-linux-gnu/nss/* appdir/usr/lib/
               - ${TRAVIS_BUILD_DIR}/build/appimagetool*.AppImage appdir
-              - sudo apt-get install python3 python3-venv
+              - sudo apt-get install python3 python3-venv python3-wheel
               - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
               - ls -alh ${TRAVIS_BUILD_DIR}/build
               - md5sum travis_release.py

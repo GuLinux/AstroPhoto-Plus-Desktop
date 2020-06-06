@@ -16,7 +16,7 @@ fi
 case "$TRAVIS_OS_NAME" in
     windows)
         INSTALLER_URL="http://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe"
-        COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.win64_msvc2017_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.win64_msvc2017_64\""
+        COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.win64_msvc2019_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.win64_msvc2019_64\""
         ;;
     linux)
         INSTALLER_URL="https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run"
@@ -31,7 +31,9 @@ INSTALLER_FILE="$( basename "$INSTALLER_URL" )"
 
 sed "s/\/\/QT_Components_Placeholder/$COMPONENTS/g" "$TRAVIS_BUILD_DIR/support/qt-installer.qs" > "$TRAVIS_BUILD_DIR/support/qt-installer-$TRAVIS_OS_NAME.qs"
 
+
 wget --quiet "$INSTALLER_URL"
+exit 1
 chmod a+x "$INSTALLER_FILE"
 if ! "./$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-$TRAVIS_OS_NAME.qs; then
     exit 1;
