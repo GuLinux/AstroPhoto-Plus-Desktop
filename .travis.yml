@@ -15,7 +15,7 @@ matrix:
             - bash ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
           before_script:
             - mkdir ${TRAVIS_BUILD_DIR}/build
-            - find "$QT5_DIR -type f"
+            - find "$QT5_BASEDIR" -type f
             - $QT5_DIR/bin/qtenv2.bat
           script:
             - cd ${TRAVIS_BUILD_DIR}/build
@@ -24,7 +24,7 @@ matrix:
                   exit 1;
               fi
             - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release 
-          before_deploy:
+          after_success:
             - export TRAVIS_WINDOWS_BUILD_DIR="$( cd "${TRAVIS_BUILD_DIR}"; pwd -W)"
             - cd ${TRAVIS_BUILD_DIR}/build
             - cinst -y python3
@@ -63,6 +63,9 @@ matrix:
           env:
             - QT5_BASEDIR: "${HOME}/Qt"
             - QT5_DIR: "${HOME}/Qt/${QT5_VERSION}/gcc_64"
+          cache:
+            directories:
+            - ${QT5_BASEDIR}
           before_install:
               - sudo apt-get update -qq
           install:
@@ -78,7 +81,7 @@ matrix:
               - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
               - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
               - ls -alh ${TRAVIS_BUILD_DIR}/build/src
-          before_deploy:
+          after_success:
               - cd "${TRAVIS_BUILD_DIR}/build"
               - wget --quiet https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
               - wget --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
