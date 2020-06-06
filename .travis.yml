@@ -3,7 +3,8 @@ matrix:
     include:
         - language: cpp
           env:
-            - QT5_BASE_DIR: "C:/Qt/${QT5_VERSION}/msvc2017_64"
+			- QT5_BASEDIR: "C:/Qt"
+            - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2017_64"
             - PATH: /c/Python38:/c/Python38/Scripts:$PATH
           name: AstroPhoto Plus Desktop - Windows
           os: windows
@@ -14,10 +15,10 @@ matrix:
             - bash ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
           before_script:
             - mkdir ${TRAVIS_BUILD_DIR}/build
-            - $QT5_BASE_DIR/bin/qtenv2.bat
+            - $QT5_DIR/bin/qtenv2.bat
           script:
             - cd ${TRAVIS_BUILD_DIR}/build
-            - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR} -DQt5_DIR=${QT5_BASE_DIR} -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
+            - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR} -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
                   cat ${TRAVIS_BUILD_DIR}/build/CMakeFiles/CMakeOutput.log;
                   exit 1;
               fi
@@ -28,7 +29,7 @@ matrix:
             - cinst -y python3
             - cinst -y nsis
             - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release --target install
-            - $QT5_BASE_DIR/bin/windeployqt --dir $TRAVIS_BUILD_DIR/build/pkg/bin $TRAVIS_BUILD_DIR/build/pkg/bin/AstroPhotoPlus-Desktop.exe  --release --no-compiler-runtime
+            - $QT5_DIR/bin/windeployqt --dir $TRAVIS_BUILD_DIR/build/pkg/bin $TRAVIS_BUILD_DIR/build/pkg/bin/AstroPhotoPlus-Desktop.exe  --release --no-compiler-runtime
             - cd "$TRAVIS_BUILD_DIR/build/pkg/bin"
             - |
                 "C:/Program Files (x86)/NSIS/makensis.exe" //NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
@@ -59,7 +60,8 @@ matrix:
           dist: bionic
           os: linux
           env:
-            - QT5_BASE_DIR: "${HOME}/Qt/${QT5_VERSION}/gcc_64"
+			- QT5_BASEDIR: "${HOME}/Qt"
+            - QT5_DIR: "${HOME}/Qt/${QT5_VERSION}/gcc_64"
           before_install:
               - sudo apt-get update -qq
           install:
@@ -70,7 +72,7 @@ matrix:
               - cd ${TRAVIS_BUILD_DIR}/build
           script:
               - cd ${TRAVIS_BUILD_DIR}/build
-              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_BASE_DIR} -DQt5_DIR=${QT5_BASE_DIR}
+              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR}
               - make -j$(nproc)
               - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
               - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir

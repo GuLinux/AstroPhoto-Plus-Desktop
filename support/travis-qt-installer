@@ -1,14 +1,13 @@
 #!/bin/bash
-QT5_ROOTDIR="$( cd "$QT5_BASE_DIR"/../..; pwd)"
 
 get_qt_size() {
-    du -sh "${QT5_BASE_DIR}"
+    du -sh "${QT5_DIR}"
 }
 
 EXEC_SUFFIX=""
 [ "$TRAVIS_OS_NAME" == "windows" ] && EXEC_SUFFIX=".exe"
 
-if [ -r "$QT5_BASE_DIR/bin/qmake$EXEC_SUFFIX" ]; then
+if [ -r "$QT5_DIR/bin/qmake$EXEC_SUFFIX" ]; then
     echo "Qt5 already installed; Qt installation size: $(get_qt_size)"
     exit 0
 fi
@@ -38,7 +37,7 @@ if ! "./$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-insta
 fi
 rm -rf "$INSTALLER_FILE"
 echo "Qt installation size (before removing docs and examples): $(get_qt_size)"
-rm -vrf "$QT5_ROOTDIR/Docs" "$QT5_ROOTDIR/Examples" "$QT5_ROOTDIR/Tools/QtCreator" "$QT5_ROOTDIR/vcredist" "$QT5_ROOTDIR/MaintenanceTool"*
-ls -alh "$QT5_ROOTDIR"
+rm -vrf "$QT5_BASEDIR/Docs" "$QT5_BASEDIR/Examples" "$QT5_BASEDIR/Tools/QtCreator" "$QT5_BASEDIR/vcredist" "$QT5_BASEDIR/MaintenanceTool"*
+ls -alh "$QT5_BASEDIR"
 echo "Qt installation size: $(get_qt_size)"
 
