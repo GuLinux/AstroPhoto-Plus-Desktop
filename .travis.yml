@@ -3,7 +3,7 @@ matrix:
     include:
         - language: cpp
           env:
-			- QT5_BASEDIR: "C:/Qt"
+            - QT5_BASEDIR: "C:/Qt"
             - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2017_64"
             - PATH: /c/Python38:/c/Python38/Scripts:$PATH
           name: AstroPhoto Plus Desktop - Windows
@@ -60,7 +60,7 @@ matrix:
           dist: bionic
           os: linux
           env:
-			- QT5_BASEDIR: "${HOME}/Qt"
+            - QT5_BASEDIR: "${HOME}/Qt"
             - QT5_DIR: "${HOME}/Qt/${QT5_VERSION}/gcc_64"
           before_install:
               - sudo apt-get update -qq
