@@ -12,7 +12,7 @@ matrix:
             directories:
             - C:/Qt
           install:
-            - bash ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
+            - bash -x ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
           before_script:
             - mkdir ${TRAVIS_BUILD_DIR}/build
             - find "$QT5_BASEDIR" -type f
@@ -98,6 +98,7 @@ matrix:
               - md5sum travis_release.py
               - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
               - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
+              - pip3 install wheel
               - pip3 install PyGithub
               - mv -v "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage* "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
           deploy:
@@ -109,40 +110,40 @@ matrix:
                 - master
               tags: false
 
-        - language: cpp
-          name: Astrophoto Plus Desktop - Mac Os App
-          os: osx
-          install:
-              - brew install qt5
-              - brew upgrade qt5
-              - export QT5_BREW_PATH="$( ls -d /usr/local/Cellar/qt/* | head -n 1)"
-          before_script:
-              - mkdir ${TRAVIS_BUILD_DIR}/build
-              - cd ${TRAVIS_BUILD_DIR}/build
-          script:
-              - cd ${TRAVIS_BUILD_DIR}/build
-              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release -DQt5_DIR=${QT5_BREW_PATH}/lib/cmake/Qt5/
-              - make -j$(nproc)
-              - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
-              - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
-          before_deploy:
-              - cd "${TRAVIS_BUILD_DIR}/build"
-              - echo ${PROJECT_VERSION}
-              - export VERSION=${PROJECT_VERSION}
-              - ${QT5_BREW_PATH}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg
-              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
-              - ls -alh ${TRAVIS_BUILD_DIR}/build
-              - md5sum travis_release.py
-              - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
-              - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
-              - pip3 install PyGithub
-              - mv -v "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
-          deploy:
-            skip_cleanup: true
-            provider: script
-            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
-            on:
-              branch:
-                - master
-              tags: false
+#        - language: cpp
+#          name: Astrophoto Plus Desktop - Mac Os App
+#          os: osx
+#          install:
+#              - brew install qt5
+#              - brew upgrade qt5
+#              - export QT5_BREW_PATH="$( ls -d /usr/local/Cellar/qt/* | head -n 1)"
+#          before_script:
+#              - mkdir ${TRAVIS_BUILD_DIR}/build
+#              - cd ${TRAVIS_BUILD_DIR}/build
+#          script:
+#              - cd ${TRAVIS_BUILD_DIR}/build
+#              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release -DQt5_DIR=${QT5_BREW_PATH}/lib/cmake/Qt5/
+#              - make -j$(nproc)
+#              - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
+#              - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
+#          before_deploy:
+#              - cd "${TRAVIS_BUILD_DIR}/build"
+#              - echo ${PROJECT_VERSION}
+#              - export VERSION=${PROJECT_VERSION}
+#              - ${QT5_BREW_PATH}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg
+#              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
+#              - ls -alh ${TRAVIS_BUILD_DIR}/build
+#              - md5sum travis_release.py
+#              - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
+#              - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
+#              - pip3 install PyGithub
+#              - mv -v "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
+#          deploy:
+#            skip_cleanup: true
+#            provider: script
+#            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
+#            on:
+#              branch:
+#                - master
+#              tags: false
 
