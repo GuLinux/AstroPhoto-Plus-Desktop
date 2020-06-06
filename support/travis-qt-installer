@@ -31,17 +31,15 @@ case "$TRAVIS_OS_NAME" in
         COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.clang_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.clang_64\""
         ;;
 esac
-INSTALLER_FILE="$( basename "$INSTALLER_URL" )"
+INSTALLER_FILE="./$( basename "$INSTALLER_URL" )"
 
 wget --quiet "$INSTALLER_URL"
 chmod a+x "$INSTALLER_FILE"
 
 if [ "${INSTALLER_FILE##*.}" = "dmg" ]; then
-    set -x
     hdiutil attach "$INSTALLER_FILE"
     find /Volumes/qt-unified-*
     INSTALLER_FILE=$(ls /Volumes/qt-unified-*/qt-unified-*.app/Contents/MacOS/qt-unified*online)
-    set +x
     echo "Using Mac installer: $INSTALLER_FILE"
 fi
 
@@ -50,7 +48,7 @@ sed "s/\/\/QT_Components_Placeholder/$COMPONENTS/g" "$TRAVIS_BUILD_DIR/support/q
 
 
 
-if ! "./$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-$TRAVIS_OS_NAME.qs; then
+if ! "$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-$TRAVIS_OS_NAME.qs; then
     exit 1;
 fi
 rm -rf "$INSTALLER_FILE"
