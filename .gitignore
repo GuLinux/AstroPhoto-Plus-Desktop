@@ -1,4 +1,6 @@
 CMakeLists.txt.user*
 build
+qt-installer-*.qs
+qt-unified-*
 
 

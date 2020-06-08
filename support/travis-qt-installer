@@ -1,0 +1,59 @@
+#!/bin/bash
+QT5_NUMVERSION="$( tr -d '.' <<<$QT5_VERSION)"
+
+get_qt_size() {
+    du -sh "${QT5_DIR}"
+}
+
+EXEC_SUFFIX=""
+[ "$TRAVIS_OS_NAME" == "windows" ] && EXEC_SUFFIX=".exe"
+
+if [ -r "$QT5_DIR/bin/qmake$EXEC_SUFFIX" ]; then
+    echo "Qt5 already installed; Qt installation size: $(get_qt_size)"
+    exit 0
+fi
+
+case "$TRAVIS_OS_NAME" in
+    windows)
+        INSTALLER_URL="https://download.qt.io/official_releases/online_installers/qt-unified-windows-x86-online.exe"
+        COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.win64_msvc2019_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.win64_msvc2019_64\""
+        ;;
+    linux)
+#        INSTALLER_URL="https://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run"
+#        COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.gcc_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.gcc_64\""
+        wget https://gulinux.net/downloads_private/Qt-Linux-$QT5_VERSION.tar.bz2 --http-user="${QT_DOWNLOAD_USER}" --http-password="${QT_DOWNLOAD_PASSWORD}"
+        sudo tar xvf Qt-Linux-$QT5_VERSION.tar.bz2 -C /opt
+        rm -f Qt-Linux-$QT5_VERSION.tar.bz2
+        exit 0
+        ;;
+    osx)
+        INSTALLER_URL="https://download.qt.io/official_releases/online_installers/qt-unified-mac-x64-online.dmg"
+        COMPONENTS="\"qt.qt5.${QT5_NUMVERSION}.clang_64\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine\", \"qt.qt5.${QT5_NUMVERSION}.qtwebengine.clang_64\""
+        ;;
+esac
+INSTALLER_FILE="./$( basename "$INSTALLER_URL" )"
+
+wget --quiet "$INSTALLER_URL"
+chmod a+x "$INSTALLER_FILE"
+
+if [ "${INSTALLER_FILE##*.}" = "dmg" ]; then
+    hdiutil attach "$INSTALLER_FILE"
+    find /Volumes/qt-unified-*
+    INSTALLER_FILE=$(ls /Volumes/qt-unified-*/qt-unified-*.app/Contents/MacOS/qt-unified*online)
+    echo "Using Mac installer: $INSTALLER_FILE"
+fi
+
+sed "s/\/\/QT_Components_Placeholder/$COMPONENTS/g" "$TRAVIS_BUILD_DIR/support/qt-installer.qs" > "$TRAVIS_BUILD_DIR/support/qt-installer-$TRAVIS_OS_NAME.qs"
+
+
+
+
+if ! "$INSTALLER_FILE" --verbose --script ${TRAVIS_BUILD_DIR}/support/qt-installer-$TRAVIS_OS_NAME.qs; then
+    exit 1;
+fi
+rm -rf "$INSTALLER_FILE"
+echo "Qt installation size (before removing docs and examples): $(get_qt_size)"
+#rm -vrf "$QT5_BASEDIR/Docs" "$QT5_BASEDIR/Examples" "$QT5_BASEDIR/Tools/QtCreator" "$QT5_BASEDIR/vcredist" "$QT5_BASEDIR/MaintenanceTool"*
+ls -alh "$QT5_BASEDIR"
+echo "Qt installation size: $(get_qt_size)"
+
