@@ -89,7 +89,7 @@ matrix:
               - chmod a+x appimagetool*.AppImage
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
-              - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs
+              - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -qmake "${QT5_DIR}/bin/qmake" -verbose=2
               - cp -av /usr/lib/x86_64-linux-gnu/nss/* appdir/usr/lib/
               - ${TRAVIS_BUILD_DIR}/build/appimagetool*.AppImage appdir
               - sudo apt-get install python3 python3-venv python3-wheel
