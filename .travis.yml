@@ -72,7 +72,7 @@ matrix:
           before_install:
               - sudo apt-get update -qq
           install:
-              - sudo apt-get -qq -y install libgl1-mesa-dev wget libfontconfig1 libxrender1  libdbus-1-3 libxkbcommon0 libxkbcommon-x11-0 xvfb libpulse-dev p7zip-full python3-requests
+              - sudo apt-get -qq -y install libgl1-mesa-dev wget libfontconfig1 libxrender1  libdbus-1-3 libxkbcommon0 libxkbcommon-x11-0 xvfb libpulse-dev p7zip-full python3-requests gstreamer1.0-plugins-base
               - sudo apt-get -qq -y install libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-present0 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-util1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1
               - python3 ${TRAVIS_BUILD_DIR}/support/qt-installer.py "$QT5_BASEDIR"
               - echo "${QT5_DIR}"
