@@ -69,7 +69,7 @@ matrix:
           before_install:
               - sudo apt-get update -qq
           install:
-              - sudo apt-get -y install libgl1-mesa-dev wget libfontconfig1 libxrender1  libdbus-1-3 libxkbcommon0 libxkbcommon-x11-0 xvfb libpulse-dev -qq
+              - sudo apt-get -y install libgl1-mesa-dev wget libfontconfig1 libxrender1  libdbus-1-3 libxkbcommon0 libxkbcommon-x11-0 xvfb libpulse-dev libxcb-icccm4 -qq
               - bash ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
           before_script:
               - mkdir ${TRAVIS_BUILD_DIR}/build
