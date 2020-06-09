@@ -43,7 +43,7 @@ matrix:
 #            - export VERSION=${PROJECT_VERSION}
 #            - cd ${TRAVIS_BUILD_DIR}/build
 #            - pwd
-#            - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
+#            - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py"
 #            - ls -alh ${TRAVIS_BUILD_DIR}/build/travis_release.py
 #            - md5sum travis_release.py
 #            - pip install PyGithub
@@ -65,7 +65,7 @@ matrix:
           os: linux
           env:
             - QT5_BASEDIR: "$HOME/Qt"
-            - QT5_DIR: "$QT5_BASE/${QT5_VERSION}/gcc_64"
+            - QT5_DIR: "$HOME/Qt/${QT5_VERSION}/gcc_64"
           cache:
             directories:
             - ${QT5_DIR}
@@ -96,7 +96,7 @@ matrix:
               - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -appimage -qmake="${QT5_DIR}/bin/qmake" -verbose=2
               #- cp -av /usr/lib/x86_64-linux-gnu/nss/* appdir/usr/lib/
               - sudo apt-get install python3 python3-venv python3-wheel
-              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
+              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py"
               - ls -alh ${TRAVIS_BUILD_DIR}/build
               - md5sum travis_release.py
               - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
@@ -135,7 +135,7 @@ matrix:
 #              - echo ${PROJECT_VERSION}
 #              - export VERSION=${PROJECT_VERSION}
 #              - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg -verbose 3
-#              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
+#              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py"
 #              - ls -alh ${TRAVIS_BUILD_DIR}/build
 #              - md5sum travis_release.py
 #              - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
