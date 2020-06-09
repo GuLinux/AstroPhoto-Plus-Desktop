@@ -84,14 +84,11 @@ matrix:
           after_success:
               - cd "${TRAVIS_BUILD_DIR}/build"
               - wget --quiet https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
-              - wget --quiet https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
               - chmod a+x linuxdeployqt*.AppImage
-              - chmod a+x appimagetool*.AppImage
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
-              - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -bundle-non-qt-libs -qmake="${QT5_DIR}/bin/qmake" -verbose=2
-              - cp -av /usr/lib/x86_64-linux-gnu/nss/* appdir/usr/lib/
-              - ${TRAVIS_BUILD_DIR}/build/appimagetool*.AppImage appdir
+              - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -appimage -qmake="${QT5_DIR}/bin/qmake" -verbose=2
+              #- cp -av /usr/lib/x86_64-linux-gnu/nss/* appdir/usr/lib/
               - sudo apt-get install python3 python3-venv python3-wheel
               - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/a68a8df028a02ce2730720b9aec8c77f5ada7496/python/travis_release.py"
               - ls -alh ${TRAVIS_BUILD_DIR}/build
