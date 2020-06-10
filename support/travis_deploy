@@ -19,6 +19,5 @@ pip3 install wheel
 pip3 install PyGithub
 cd "${TRAVIS_BUILD_DIR}/build"
 wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py" -O "${TRAVIS_BUILD_DIR}/travis_release.py"
-md5sum travis_release.py
 python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "$@"
 

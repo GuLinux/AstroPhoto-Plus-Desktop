@@ -64,19 +64,14 @@ matrix:
           dist: xenial
           os: linux
           env:
-            - QT5_BASEDIR: "$HOME/Qt"
-            - QT5_DIR: "$HOME/Qt/${QT5_VERSION}/gcc_64"
-          cache:
-            directories:
-            - ${QT5_DIR}
+              - QT5_BASEDIR: "$HOME/Qt"
+              - QT5_DIR: "$HOME/Qt/${QT5_VERSION}/gcc_64"
           before_install:
               - sudo apt-get update -qq
-          install:
               - sudo apt-get -qq -y install libgl1-mesa-dev wget libfontconfig1 libxrender1  libdbus-1-3 libxkbcommon0 libxkbcommon-x11-0 xvfb libpulse-dev p7zip-full python3-requests gstreamer1.0-plugins-base
               - sudo apt-get -qq -y install libxcb-dri2-0 libxcb-dri3-0 libxcb-glx0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-present0 libxcb-randr0 libxcb-render-util0 libxcb-render0 libxcb-shape0 libxcb-shm0 libxcb-sync1 libxcb-util1 libxcb-xfixes0 libxcb-xinerama0 libxcb-xkb1 libxcb1
+          install:
               - python3 ${TRAVIS_BUILD_DIR}/support/qt-installer.py "$QT5_BASEDIR"
-              - echo "${QT5_DIR}"
-              - ls -alh "${QT5_DIR}"
           before_script:
               - mkdir ${TRAVIS_BUILD_DIR}/build
               - cd ${TRAVIS_BUILD_DIR}/build
@@ -93,7 +88,6 @@ matrix:
               - chmod a+x linuxdeployqt*.AppImage
               - export VERSION=${PROJECT_VERSION}
               - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -appimage -qmake="${QT5_DIR}/bin/qmake" -verbose=2
-              #- cp -av /usr/lib/x86_64-linux-gnu/nss/* appdir/usr/lib/
               - sudo apt-get install python3 python3-venv
               - mv -v "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage* "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
           deploy:
@@ -104,41 +98,38 @@ matrix:
               all_branches: true
               tags: false
 
-#        - language: cpp
-#          name: Astrophoto Plus Desktop - Mac Os App
-#          os: osx
-#          env:
-#            - QT5_BASEDIR: "$HOME/Qt"
-#            - QT5_DIR: "$HOME/Qt/${QT5_VERSION}/clang_64"
-#          install:
-#            - bash ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
-#          before_script:
-#              - mkdir ${TRAVIS_BUILD_DIR}/build
-#              - cd ${TRAVIS_BUILD_DIR}/build
-#          script:
-#              - cd ${TRAVIS_BUILD_DIR}/build
+        - language: cpp
+          name: Astrophoto Plus Desktop - Mac Os App
+          os: osx
+          env:
+              - QT5_BASEDIR: "$HOME/Qt"
+              - QT5_DIR: "$HOME/Qt/${QT5_VERSION}/clang_64"
+          before_install:
+              - brew install p7zip
+              - pip3 install requests
+          install:
+              - python3 ${TRAVIS_BUILD_DIR}/support/qt-installer.py "$QT5_BASEDIR"
+          before_script:
+              - mkdir ${TRAVIS_BUILD_DIR}/build
+              - cd ${TRAVIS_BUILD_DIR}/build
+          script:
+              - cd ${TRAVIS_BUILD_DIR}/build
+              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR}
 #              - cmake ${TRAVIS_BUILD_DIR} -DCMAKE_BUILD_TYPE=Release -DQt5_DIR=${QT5_DIR}/lib/cmake/Qt5/
-#              - make -j$(nproc)
-#              - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
-#              - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
-#          after_success:
-#              - cd "${TRAVIS_BUILD_DIR}/build"
-#              - echo ${PROJECT_VERSION}
-#              - export VERSION=${PROJECT_VERSION}
-#              - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg -verbose 3
-#              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py"
-#              - ls -alh ${TRAVIS_BUILD_DIR}/build
-#              - md5sum travis_release.py
-#              - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
-#              - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
-#              - pip3 install PyGithub
-#              - mv -v "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
-#          deploy:
-#            skip_cleanup: true
-#            provider: script
-#            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
-#            on:
-#              branch:
-#                - master
-#              tags: false
+              - make -j$(nproc)
+              - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
+              - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
+          after_success:
+              - cd "${TRAVIS_BUILD_DIR}/build"
+              - echo ${PROJECT_VERSION}
+              - export VERSION=${PROJECT_VERSION}
+              - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg -verbose 3
+              - mv -v "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
+          deploy:
+            skip_cleanup: true
+            provider: script
+            script: bash "${TRAVIS_BUILD_DIR}/support/travis_deploy" "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
+            on:
+              all_branches: true
+              tags: false
 
