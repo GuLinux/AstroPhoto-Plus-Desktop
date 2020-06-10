@@ -111,6 +111,7 @@ matrix:
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
               - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -verbose=2
+              - install_name_tool -add_rpath @executable_path/../Frameworks "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.app/Contents/MacOS/AstroPhotoPlus-Desktop"
               - ln -s /Applications ${TRAVIS_BUILD_DIR}/build/appdir
               - hdiutil create -volname "AstroPhoto Plus" -srcfolder "${TRAVIS_BUILD_DIR}/build/appdir" -ov -format UDZO "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
           deploy:
