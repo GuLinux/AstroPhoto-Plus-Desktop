@@ -6,7 +6,7 @@ matrix:
         - language: cpp
           env:
             - QT5_BASEDIR: "C:/Qt"
-            - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2019_64"
+            - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2017_64"
             - PATH: /c/Python38:/c/Python38/Scripts:$PATH
           name: AstroPhoto Plus Desktop - Windows
           os: windows
