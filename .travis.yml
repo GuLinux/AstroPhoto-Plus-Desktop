@@ -119,7 +119,7 @@ matrix:
               - make -j$(nproc)
               - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
               - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
-          after_success:
+          before_deploy:
               - cd "${TRAVIS_BUILD_DIR}/build"
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}

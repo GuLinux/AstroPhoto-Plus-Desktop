@@ -18,6 +18,6 @@ source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
 pip3 install wheel
 pip3 install PyGithub
 cd "${TRAVIS_BUILD_DIR}/build"
-wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py" -O "${TRAVIS_BUILD_DIR}/build/travis_release.py"
+wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/d5ff2ce5b17d7561a8f729cddd2bdf8b6d5eb556/python/travis_release.py" -O "${TRAVIS_BUILD_DIR}/build/travis_release.py"
 python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "$@"
 
