@@ -87,30 +87,21 @@ matrix:
               - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
               - make install -j$(nproc) DESTDIR=${TRAVIS_BUILD_DIR}/build/appdir
               - ls -alh ${TRAVIS_BUILD_DIR}/build/src
-          after_success:
+          before_deploy:
               - cd "${TRAVIS_BUILD_DIR}/build"
               - wget --quiet https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
               - chmod a+x linuxdeployqt*.AppImage
-              - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
               - ${TRAVIS_BUILD_DIR}/build/linuxdeployqt*.AppImage appdir/usr/share/applications/*.desktop -appimage -qmake="${QT5_DIR}/bin/qmake" -verbose=2
               #- cp -av /usr/lib/x86_64-linux-gnu/nss/* appdir/usr/lib/
-              - sudo apt-get install python3 python3-venv python3-wheel
-              - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py"
-              - ls -alh ${TRAVIS_BUILD_DIR}/build
-              - md5sum travis_release.py
-              - python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
-              - source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
-              - pip3 install wheel
-              - pip3 install PyGithub
+              - sudo apt-get install python3 python3-venv
               - mv -v "${TRAVIS_BUILD_DIR}/build"/AstroPhoto*AppImage* "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
           deploy:
             skip_cleanup: true
             provider: script
-            script: python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
+            script: bash "${TRAVIS_BUILD_DIR}/support/travis_deploy" "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
             on:
-              branch:
-                - master
+              all_branches: true
               tags: false
 
 #        - language: cpp
