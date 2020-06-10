@@ -123,7 +123,7 @@ matrix:
               - cd "${TRAVIS_BUILD_DIR}/build"
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
-              - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg -verbose 3
+              - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg -verbose=2
               - mv -v "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
           deploy:
             skip_cleanup: true
