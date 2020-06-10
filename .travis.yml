@@ -112,7 +112,7 @@ matrix:
               - export VERSION=${PROJECT_VERSION}
               - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -verbose=2
               - ln -s /Applications ${TRAVIS_BUILD_DIR}/build/appdir
-              - hdiutil create -volname "AstroPhoto Plus" -srcfolder "${TRAVIS_BUILD_DIR}/build/appdir" -format HFS+ "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
+              - hdiutil create -volname "AstroPhoto Plus" -srcfolder "${TRAVIS_BUILD_DIR}/build/appdir" -ov -format UDZO "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
           deploy:
             skip_cleanup: true
             provider: script
