@@ -1,4 +1,8 @@
 #!/bin/bash
+PYTHON_BINARY=python3
+if [ "$TRAVIS_OS_NAME" = "windows" ]
+    PYTHON_BINARY=python
+fi
 
 # conditions checking
 export GITHUB_DRAFT_RELEASE=0
@@ -13,11 +17,11 @@ if [ "$TRAVIS_BRANCH" != master ]; then
     fi
 fi
 
-python3 -m venv ${TRAVIS_BUILD_DIR}/build/venv
+$PYTHON_BINARY -m venv ${TRAVIS_BUILD_DIR}/build/venv
 source ${TRAVIS_BUILD_DIR}/build/venv/bin/activate
 pip3 install wheel
 pip3 install PyGithub
 cd "${TRAVIS_BUILD_DIR}/build"
 wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/d5ff2ce5b17d7561a8f729cddd2bdf8b6d5eb556/python/travis_release.py" -O "${TRAVIS_BUILD_DIR}/build/travis_release.py"
-python3 "${TRAVIS_BUILD_DIR}/build/travis_release.py" "$@"
+$PYTHON_BINARY "${TRAVIS_BUILD_DIR}/build/travis_release.py" "$@"
 
