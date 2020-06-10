@@ -26,11 +26,11 @@ files = {
             { 'qtpackage': '', 'filename':             'qtbase-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
             { 'qtpackage': '', 'filename':             'qtmultimedia-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
             { 'qtpackage': '', 'filename':             'qtdeclarative-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
-            { 'qtpackage': '', 'filename':             'qtwebengine-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
+            { 'qtpackage': '', 'filename':             'qtwebchannel-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
             { 'qtpackage': '', 'filename':             'qtlocation-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
             { 'qtpackage': '', 'filename':             'qtserialport-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
             { 'qtpackage': '', 'filename':             'qttools-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
-            { 'qtpackage': '.qtwebengine', 'filename': 'qtwebchannel-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
+            { 'qtpackage': '.qtwebengine', 'filename': 'qtwebengine-Windows-Windows_10-MSVC2017-Windows-Windows_10-X86_64.7z'},
         ],
     },
     'linux': {

@@ -10,9 +10,6 @@ matrix:
             - PATH: /c/Python38:/c/Python38/Scripts:$PATH
           name: AstroPhoto Plus Desktop - Windows
           os: windows
-          cache:
-            directories:
-            - C:/Qt
           before_install:
             - cinst -y python3 7zip
             - pip install requests
