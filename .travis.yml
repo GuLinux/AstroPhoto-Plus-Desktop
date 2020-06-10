@@ -1,6 +1,4 @@
 if: '(branch = master OR type = pull_request OR commit_message =~ /.*#trigger_ci.*/) AND (NOT commit_message =~ /.*#skip_ci.*/) AND ( tag IS blank )'
-addons:
-  ssh_known_hosts: gulinux.net:8122
 matrix:
     include:
         - language: cpp
@@ -9,6 +7,7 @@ matrix:
             - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2017_64"
             - PATH: /c/Python38:/c/Python38/Scripts:$PATH
           name: AstroPhoto Plus Desktop - Windows
+          if: 'NOT commit_message =~ /.*#skip_windows.*/'
           os: windows
           before_install:
             - cinst -y python3 7zip
@@ -17,8 +16,7 @@ matrix:
             - python ${TRAVIS_BUILD_DIR}/support/qt-installer.py "$QT5_BASEDIR"
           before_script:
             - mkdir ${TRAVIS_BUILD_DIR}/build
-            - find "$QT5_BASEDIR" -type f
-            - $QT5_DIR/bin/qtenv2.bat
+            - export PATH="$QT5_DIR/bin:$PATH"
           script:
             - cd ${TRAVIS_BUILD_DIR}/build
             - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR} -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
@@ -48,6 +46,7 @@ matrix:
 
         - language: cpp
           name: Astrophoto Plus Desktop - Linux AppImage
+          if: 'NOT commit_message =~ /.*#skip_linux.*/'
           dist: xenial
           os: linux
           env:
@@ -87,6 +86,7 @@ matrix:
 
         - language: cpp
           name: Astrophoto Plus Desktop - Mac Os App
+          if: 'NOT commit_message =~ /.*#skip_osx.*/'
           os: osx
           env:
               - QT5_BASEDIR: "$HOME/Qt"
@@ -110,8 +110,9 @@ matrix:
               - cd "${TRAVIS_BUILD_DIR}/build"
               - echo ${PROJECT_VERSION}
               - export VERSION=${PROJECT_VERSION}
-              - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -dmg -verbose=2
-              - mv -v "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop.dmg" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
+              - ${QT5_DIR}/bin/macdeployqt appdir/AstroPhotoPlus-Desktop.app -verbose=2
+              - ln -s /Applications ${TRAVIS_BUILD_DIR}/builld/appdir
+              - hdiutil create -volname "AstroPhoto Plus" -srcfolder "${TRAVIS_BUILD_DIR}/build/appdir" -format HFS+ "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
           deploy:
             skip_cleanup: true
             provider: script
