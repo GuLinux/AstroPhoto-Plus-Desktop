@@ -3,61 +3,51 @@ addons:
   ssh_known_hosts: gulinux.net:8122
 matrix:
     include:
-#        - language: cpp
-#          env:
-#            - QT5_BASEDIR: "C:/Qt"
-#            - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2019_64"
-#            - PATH: /c/Python38:/c/Python38/Scripts:$PATH
-#          name: AstroPhoto Plus Desktop - Windows
-#          os: windows
-#          cache:
-#            directories:
-#            - C:/Qt
-#          install:
-#            - bash ${TRAVIS_BUILD_DIR}/support/travis-qt-installer
-#            - cinst -y visualstudio2019-workload-netcorebuildtools visualstudio2019-workload-vctools visualstudio2019-workload-webbuildtools visualstudio2019buildtools
-#          before_script:
-#            - mkdir ${TRAVIS_BUILD_DIR}/build
-#            - find "$QT5_BASEDIR" -type f
-#            - $QT5_DIR/bin/qtenv2.bat
-#          script:
-#            - cd ${TRAVIS_BUILD_DIR}/build
-#            - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR} -G "Visual Studio 16 2019" -A x64 -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
-#                  cat ${TRAVIS_BUILD_DIR}/build/CMakeFiles/CMakeOutput.log;
-#                  exit 1;
-#              fi
-#            - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release 
-#          after_success:
-#            - export TRAVIS_WINDOWS_BUILD_DIR="$( cd "${TRAVIS_BUILD_DIR}"; pwd -W)"
-#            - cd ${TRAVIS_BUILD_DIR}/build
-#            - cinst -y python3
-#            - cinst -y nsis
-#            - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release --target install
-#            - $QT5_DIR/bin/windeployqt --dir $TRAVIS_BUILD_DIR/build/pkg/bin $TRAVIS_BUILD_DIR/build/pkg/bin/AstroPhotoPlus-Desktop.exe  --release --no-compiler-runtime
-#            - cd "$TRAVIS_BUILD_DIR/build/pkg/bin"
-#            - |
-#                "C:/Program Files (x86)/NSIS/makensis.exe" //NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
-#            - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
-#            - echo ${PROJECT_VERSION}
-#            - echo ${TRAVIS_WINDOWS_BUILD_DIR}
-#            - export VERSION=${PROJECT_VERSION}
-#            - cd ${TRAVIS_BUILD_DIR}/build
-#            - pwd
-#            - wget --quiet "https://raw.githubusercontent.com/GuLinux/GuLinux-Commons/58ecc34c4171b9c135d93a4bf03bde3ebea3bf7f/python/travis_release.py"
-#            - ls -alh ${TRAVIS_BUILD_DIR}/build/travis_release.py
-#            - md5sum travis_release.py
-#            - pip install PyGithub
-#            - mv -v "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe" "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Windows-Setup.exe"
-#
-#          deploy:
-#            skip_cleanup: true
-#            provider: script
-#            script: python ${TRAVIS_WINDOWS_BUILD_DIR}/build/travis_release.py "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Windows-Setup.exe"
-#            on:
-#              branch:
-#                - master
-#              tags: false
-
+        - language: cpp
+          env:
+            - QT5_BASEDIR: "C:/Qt"
+            - QT5_DIR: "C:/Qt/${QT5_VERSION}/msvc2019_64"
+            - PATH: /c/Python38:/c/Python38/Scripts:$PATH
+          name: AstroPhoto Plus Desktop - Windows
+          os: windows
+          cache:
+            directories:
+            - C:/Qt
+          before_install:
+            - cinst -y python3 7zip
+            - pip install requests
+          install:
+            - python ${TRAVIS_BUILD_DIR}/support/qt-installer.py "$QT5_BASEDIR"
+          before_script:
+            - mkdir ${TRAVIS_BUILD_DIR}/build
+            - find "$QT5_BASEDIR" -type f
+            - $QT5_DIR/bin/qtenv2.bat
+          script:
+            - cd ${TRAVIS_BUILD_DIR}/build
+            - if ! cmake ${TRAVIS_BUILD_DIR} -DCMAKE_PREFIX_PATH=${QT5_DIR} -DQt5_DIR=${QT5_DIR} -G "Visual Studio 15 2017 Win64" -DCMAKE_INSTALL_PREFIX=$PWD/pkg; then
+                  cat ${TRAVIS_BUILD_DIR}/build/CMakeFiles/CMakeOutput.log;
+                  exit 1;
+              fi
+            - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release 
+          before_deploy:
+            - export TRAVIS_WINDOWS_BUILD_DIR="$( cd "${TRAVIS_BUILD_DIR}"; pwd -W)"
+            - cd ${TRAVIS_BUILD_DIR}/build
+            - cinst -y nsis
+            - cmake --build ${TRAVIS_BUILD_DIR}/build --parallel --config Release --target install
+            - $QT5_DIR/bin/windeployqt --dir $TRAVIS_BUILD_DIR/build/pkg/bin $TRAVIS_BUILD_DIR/build/pkg/bin/AstroPhotoPlus-Desktop.exe  --release --no-compiler-runtime
+            - cd "$TRAVIS_BUILD_DIR/build/pkg/bin"
+            - |
+                "C:/Program Files (x86)/NSIS/makensis.exe" //NOCD ${TRAVIS_BUILD_DIR}/src/resources/installer.nsis
+            - source ${TRAVIS_BUILD_DIR}/build/src/resources/version.env
+            - export VERSION=${PROJECT_VERSION}
+            - mv -v "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Setup.exe" "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Windows-Setup.exe"
+          deploy:
+            skip_cleanup: true
+            provider: script
+            script: bash "${TRAVIS_BUILD_DIR}/support/travis_deploy" "${TRAVIS_WINDOWS_BUILD_DIR}/build/pkg/bin/AstroPhoto-Plus-Desktop-Windows-Setup.exe"
+            on:
+              all_branches: true
+              tags: false
 
         - language: cpp
           name: Astrophoto Plus Desktop - Linux AppImage
@@ -128,7 +118,7 @@ matrix:
           deploy:
             skip_cleanup: true
             provider: script
-            script: bash "${TRAVIS_BUILD_DIR}/support/travis_deploy" "${TRAVIS_BUILD_DIR}/build/AstroPhoto-Plus-Desktop-Linux.AppImage"
+            script: bash "${TRAVIS_BUILD_DIR}/support/travis_deploy" "${TRAVIS_BUILD_DIR}/build/appdir/AstroPhotoPlus-Desktop-OSX.dmg"
             on:
               all_branches: true
               tags: false
